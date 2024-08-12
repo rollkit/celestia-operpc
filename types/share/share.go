@@ -3,6 +3,7 @@ package share
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
@@ -42,6 +43,27 @@ const (
 // Share contains the raw share data (including namespace ID).
 type Share struct {
 	data []byte
+}
+
+type jsonShare struct {
+	Data []byte `json:"data"`
+}
+
+func (s *Share) MarshalJSON() ([]byte, error) {
+	share := &jsonShare{
+		Data: s.data,
+	}
+	return json.Marshal(share)
+}
+
+func (s *Share) UnmarshalJSON(data []byte) error {
+	var share jsonShare
+	err := json.Unmarshal(data, &share)
+	if err != nil {
+		return err
+	}
+	s.data = share.Data
+	return nil
 }
 
 func (s *Share) Namespace() (namespace.Namespace, error) {

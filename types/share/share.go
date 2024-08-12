@@ -57,12 +57,7 @@ func (s *Share) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Share) UnmarshalJSON(data []byte) error {
-	var share jsonShare
-	err := json.Unmarshal(data, &share)
-	if err != nil {
-		return err
-	}
-	s.data = share.Data
+	s.data = data
 	return nil
 }
 

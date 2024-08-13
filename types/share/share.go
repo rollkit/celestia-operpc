@@ -3,7 +3,6 @@ package share
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
@@ -45,19 +44,12 @@ type Share struct {
 	data []byte
 }
 
-type jsonShare struct {
-	Data []byte `json:"data"`
-}
-
-func (s *Share) MarshalJSON() ([]byte, error) {
-	share := &jsonShare{
-		Data: s.data,
-	}
-	return json.Marshal(share)
-}
-
 func (s *Share) UnmarshalJSON(data []byte) error {
-	s.data = data
+	share, err := NewShare(data)
+	if err != nil {
+		return err
+	}
+	s.data = share.data
 	return nil
 }
 

@@ -335,3 +335,21 @@ func FromBytes(bytes [][]byte) (shares []AppShare, err error) {
 	}
 	return shares, nil
 }
+
+func SparseSharesNeeded(sequenceLen uint32) (sharesNeeded int) {
+	if sequenceLen == 0 {
+		return 0
+	}
+
+	if sequenceLen < appconsts.FirstSparseShareContentSize {
+		return 1
+	}
+
+	bytesAvailable := appconsts.FirstSparseShareContentSize
+	sharesNeeded++
+	for uint32(bytesAvailable) < sequenceLen {
+		bytesAvailable += appconsts.ContinuationSparseShareContentSize
+		sharesNeeded++
+	}
+	return sharesNeeded
+}

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"hash"
 
-	"github.com/celestiaorg/celestia-node/share"
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
 	"github.com/celestiaorg/celestia-openrpc/types/namespace"
 	"github.com/celestiaorg/nmt"
@@ -110,7 +109,7 @@ func (s *AppShare) InfoByte() (InfoByte, error) {
 }
 
 // toAppShares converts node's raw shares to the app shares, skipping padding
-func toAppShares(shrs ...share.Share) ([]AppShare, error) {
+func toAppShares(shrs ...Share) ([]AppShare, error) {
 	appShrs := make([]AppShare, 0, len(shrs))
 	for _, shr := range shrs {
 		bShare, err := NewShare(shr)

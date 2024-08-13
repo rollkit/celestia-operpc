@@ -7,7 +7,16 @@ import (
 	"hash"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/nmt"
 )
+
+type NamespacedRow struct {
+	Shares []Share    `json:"shares"`
+	Proof  *nmt.Proof `json:"proof"`
+}
+
+// NamespacedShares represents all shares with proofs within a specific namespace of an EDS.
+type NamespacedShares []NamespacedRow
 
 // DefaultRSMT2DCodec sets the default rsmt2d.Codec for shares.
 var DefaultRSMT2DCodec = appconsts.DefaultCodec

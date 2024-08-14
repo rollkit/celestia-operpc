@@ -124,19 +124,6 @@ func (s *AppShare) InfoByte() (InfoByte, error) {
 	return ParseInfoByte(unparsed)
 }
 
-// toAppShares converts node's raw shares to the app shares, skipping padding
-func toAppShares(shrs ...Share) ([]AppShare, error) {
-	appShrs := make([]AppShare, 0, len(shrs))
-	for _, shr := range shrs {
-		bShare, err := NewShare(shr)
-		if err != nil {
-			return nil, err
-		}
-		appShrs = append(appShrs, *bShare)
-	}
-	return appShrs, nil
-}
-
 func validateSize(data []byte) error {
 	if len(data) != appconsts.ShareSize {
 		return fmt.Errorf("share data must be %d bytes, got %d", appconsts.ShareSize, len(data))

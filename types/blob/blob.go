@@ -175,3 +175,27 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 func (b *Blob) Index() int {
 	return b.index
 }
+
+// Length returns the number of shares in the blob.
+func (b *Blob) Length() (int, error) {
+	s, err := BlobsToShares(b)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(s) == 0 {
+		return 0, errors.New("blob with zero shares received")
+	}
+
+	appShare, err := share.NewShare(s[0])
+	if err != nil {
+		return 0, err
+	}
+
+	seqLength, err := appShare.SequenceLen()
+	if err != nil {
+		return 0, err
+	}
+
+	return share.SparseSharesNeeded(seqLength), nil
+}

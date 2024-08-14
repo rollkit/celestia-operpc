@@ -50,7 +50,7 @@ func SubmitBlob(ctx context.Context, url string, token string) error {
 	}
 
 	// submit the blob to the network
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{helloWorldBlob}, blob.DefaultGasPrice())
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{helloWorldBlob}, blob.NewSubmitOptions())
 	if err != nil {
 		return err
 	}

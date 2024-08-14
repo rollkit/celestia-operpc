@@ -23,4 +23,9 @@ type API struct {
 		eh *header.ExtendedHeader,
 		namespace Namespace,
 	) (NamespacedShares, error) `perm:"read"`
+	GetRange func(
+		ctx context.Context,
+		height uint64,
+		start, end int,
+	) (*GetRangeResult, error) `perm:"read"`
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
+	"github.com/tendermint/tendermint/types"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
 	"github.com/celestiaorg/celestia-openrpc/types/core"
@@ -15,6 +16,13 @@ import (
 // Root represents root commitment to multiple Shares.
 // In practice, it is a commitment to all the Data in a square.
 type Root = core.DataAvailabilityHeader
+
+// GetRangeResult wraps the return value of the GetRange endpoint
+// because Json-RPC doesn't support more than two return values.
+type GetRangeResult struct {
+	Shares []Share
+	Proof  *types.ShareProof
+}
 
 // NamespacedRow represents all shares with proofs within a specific namespace of a single EDS row.
 type NamespacedRow struct {

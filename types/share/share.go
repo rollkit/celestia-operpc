@@ -9,7 +9,6 @@ import (
 
 	"hash"
 
-	"github.com/celestiaorg/nmt"
 	"github.com/tendermint/tendermint/types"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"

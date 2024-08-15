@@ -9,8 +9,6 @@ import (
 
 	"hash"
 
-	"github.com/tendermint/tendermint/types"
-
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
 	"github.com/celestiaorg/celestia-openrpc/types/core"
 	"github.com/celestiaorg/celestia-openrpc/types/namespace"
@@ -26,7 +24,7 @@ type Root = core.DataAvailabilityHeader
 // because Json-RPC doesn't support more than two return values.
 type GetRangeResult struct {
 	Shares []Share
-	Proof  *types.ShareProof
+	Proof  *ShareProof
 }
 
 // NamespacedRow represents all shares with proofs within a specific namespace of a single EDS row.

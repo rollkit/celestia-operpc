@@ -2,6 +2,7 @@ package blob
 
 import (
 	"context"
+
 	"github.com/celestiaorg/celestia-openrpc/types/share"
 )
 

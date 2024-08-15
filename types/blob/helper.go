@@ -4,16 +4,16 @@ import (
 	"bytes"
 	"sort"
 
+	"github.com/celestiaorg/celestia-openrpc/types/core"
 	"github.com/celestiaorg/celestia-openrpc/types/share"
-	"github.com/tendermint/tendermint/types"
 )
 
 // BlobsToShares accepts blobs and convert them to the Shares.
 func BlobsToShares(blobs ...*Blob) ([]share.Share, error) {
-	b := make([]types.Blob, len(blobs))
+	b := make([]core.CoreBlob, len(blobs))
 	for i, blob := range blobs {
 		namespace := blob.Namespace()
-		b[i] = types.Blob{
+		b[i] = core.CoreBlob{
 			NamespaceVersion: namespace.Version,
 			NamespaceID:      namespace.ID,
 			Data:             blob.Data,

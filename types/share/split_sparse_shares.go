@@ -7,8 +7,8 @@ import (
 	"golang.org/x/exp/slices"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	coretypes "github.com/celestiaorg/celestia-openrpc/types/core"
 	appns "github.com/celestiaorg/celestia-openrpc/types/namespace"
-	coretypes "github.com/tendermint/tendermint/types"
 )
 
 // SparseShareSplitter lazily splits blobs into shares that will eventually be
@@ -22,7 +22,7 @@ func NewSparseShareSplitter() *SparseShareSplitter {
 	return &SparseShareSplitter{}
 }
 
-func (sss *SparseShareSplitter) Write(blob coretypes.Blob) error {
+func (sss *SparseShareSplitter) Write(blob coretypes.CoreBlob) error {
 	if !slices.Contains(appconsts.SupportedShareVersions, blob.ShareVersion) {
 		return fmt.Errorf("unsupported share version: %d", blob.ShareVersion)
 	}

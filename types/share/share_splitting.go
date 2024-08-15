@@ -1,11 +1,11 @@
 package share
 
 import (
-	coretypes "github.com/tendermint/tendermint/types"
+	"github.com/celestiaorg/celestia-openrpc/types/core"
 )
 
 // SplitBlobs splits the provided blobs into shares.
-func SplitBlobs(blobs ...coretypes.Blob) ([]AppShare, error) {
+func SplitBlobs(blobs ...core.CoreBlob) ([]AppShare, error) {
 	writer := NewSparseShareSplitter()
 	for _, blob := range blobs {
 		if err := writer.Write(blob); err != nil {

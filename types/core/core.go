@@ -57,6 +57,24 @@ type PartSetHeader struct {
 	Hash  cmbytes.HexBytes `json:"hash"`
 }
 
+type CoreBlob struct {
+	// NamespaceVersion is the version of the namespace. Used in conjunction
+	// with NamespaceID to determine the namespace of this blob.
+	NamespaceVersion uint8
+
+	// NamespaceID defines the namespace ID of this blob. Used in conjunction
+	// with NamespaceVersion to determine the namespace of this blob.
+	NamespaceID []byte
+
+	// Data is the actual data of the blob.
+	// (e.g. a block of a virtual sidechain).
+	Data []byte
+
+	// ShareVersion is the version of the share format that this blob should use
+	// when encoded into shares.
+	ShareVersion uint8
+}
+
 // Address is hex bytes.
 type Address = crypto.Address
 

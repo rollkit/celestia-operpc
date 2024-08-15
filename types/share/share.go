@@ -14,6 +14,7 @@ import (
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
 	"github.com/celestiaorg/celestia-openrpc/types/core"
 	"github.com/celestiaorg/celestia-openrpc/types/namespace"
+	"github.com/celestiaorg/celestia-openrpc/types/proofs"
 	"github.com/celestiaorg/nmt"
 )
 
@@ -32,6 +33,22 @@ type GetRangeResult struct {
 type NamespacedRow struct {
 	Shares []Share    `json:"shares"`
 	Proof  *nmt.Proof `json:"proof"`
+}
+
+// ShareProof is an NMT proof that a set of shares exist in a set of rows and a
+// Merkle proof that those rows exist in a Merkle tree with a given data root.
+type ShareProof struct {
+	// Data are the raw shares that are being proven.
+	Data [][]byte `json:"data"`
+	// ShareProofs are NMT proofs that the shares in Data exist in a set of
+	// rows. There will be one ShareProof per row that the shares occupy.
+	ShareProofs []*nmt.Proof `json:"share_proofs"`
+	// NamespaceID is the namespace id of the shares being proven. This
+	// namespace id is used when verifying the proof. If the namespace id doesn't
+	// match the namespace of the shares, the proof will fail verification.
+	NamespaceID      []byte          `json:"namespace_id"`
+	RowProof         proofs.RowProof `json:"row_proof"`
+	NamespaceVersion uint32          `json:"namespace_version"`
 }
 
 // NamespacedShares represents all shares with proofs within a specific namespace of an EDS.

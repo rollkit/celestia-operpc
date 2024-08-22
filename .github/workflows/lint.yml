@@ -3,11 +3,6 @@
 name: lint
 on:
   workflow_call:
-    inputs:
-      GO_VERSION:
-        description: "Go version to use"
-        type: string
-        required: true
 
 jobs:
   golangci-lint:
@@ -15,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-go@v5
         with:
-          go-version: ${{ inputs.GO_VERSION }}
+          go-version-file: ./go.mod
         # This steps sets the GIT_DIFF environment variable to true
         # if files defined in PATTERS changed
+
       - uses: technote-space/get-diff-action@v6.1.2
         with:
           # This job will pass without running if go.mod, go.sum, and *.go
@@ -29,7 +26,7 @@ jobs:
             go.mod
             go.sum
 
-      - uses: golangci/golangci-lint-action@v6.0.1
+      - uses: golangci/golangci-lint-action@v6.1.0
         with:
           version: latest
           args: --timeout 10m
@@ -40,10 +37,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: celestiaorg/.github/.github/actions/yamllint@v0.4.3
 
   markdown-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: celestiaorg/.github/.github/actions/markdown-lint@v0.4.3

@@ -26,8 +26,6 @@ on:
 jobs:
   api-equivalence:
     uses: ./.github/workflows/test-equivalence.yml
-    with:
-      GO_VERSION: "1.22"
 
   lint:
     uses: ./.github/workflows/lint.yml
@@ -47,6 +45,7 @@ jobs:
     permissions: "write-all"
     steps:
       - uses: actions/checkout@v4
+
       - name: Version Release
         uses: celestiaorg/.github/.github/actions/version-release@v0.4.3
         with:

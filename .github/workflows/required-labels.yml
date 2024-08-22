@@ -1,0 +1,17 @@
+name: required labels
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  required-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mheap/github-action-required-labels@v5
+        with:
+          mode: minimum
+          count: 1
+          labels: "T:enhancement, T:documentation, T:code-hygiene, T:bug, T:adr, T:sdk, T:testing, T:question, T:dependencies, T:spec-and-docs, T:da-integration, T:dev-usability-and-ux" # yamllint disable-line rule:line-length

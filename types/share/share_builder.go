@@ -76,7 +76,7 @@ func (b *Builder) AddData(rawData []byte) (rawDataLeftOver []byte) {
 	return rawData[pendingLeft:]
 }
 
-func (b *Builder) Build() (*Share, error) {
+func (b *Builder) Build() (*AppShare, error) {
 	return NewShare(b.rawShareData)
 }
 

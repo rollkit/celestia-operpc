@@ -1,6 +1,6 @@
 module github.com/celestiaorg/celestia-openrpc
 
-go 1.20
+go 1.21.5
 
 require (
 	cosmossdk.io/math v1.3.0
@@ -16,7 +16,6 @@ require (
 	github.com/libp2p/go-libp2p v0.30.0
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/stretchr/testify v1.9.0
-	github.com/tendermint/tendermint v0.0.0-00010101000000-000000000000
 	golang.org/x/exp v0.0.0-20231206192017-f3f8817b8deb
 )
 
@@ -112,5 +111,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/blake3 v1.2.1 // indirect
 )
-
-replace github.com/tendermint/tendermint => github.com/celestiaorg/celestia-core v1.38.0-tm-v0.34.29

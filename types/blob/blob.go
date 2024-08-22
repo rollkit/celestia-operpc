@@ -10,6 +10,7 @@ import (
 	"github.com/celestiaorg/nmt/namespace"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/celestia-openrpc/types/proofs"
 	"github.com/celestiaorg/celestia-openrpc/types/share"
 
 	"github.com/celestiaorg/go-square/blob"
@@ -29,18 +30,6 @@ var (
 	ErrInvalidProof = errors.New("blob: invalid proof")
 )
 
-// RowProof is a Merkle proof that a set of rows exist in a Merkle tree with a
-// given data root.
-type RowProof struct {
-	// RowRoots are the roots of the rows being proven.
-	RowRoots []byte `json:"row_roots"`
-	// Proofs is a list of Merkle proofs where each proof proves that a row
-	// exists in a Merkle tree with a given data root.
-	Proofs   []*merkle.Proof `json:"proofs"`
-	StartRow uint32          `json:"start_row"`
-	EndRow   uint32          `json:"end_row"`
-}
-
 // CommitmentProof is an inclusion proof of a commitment to the data root.
 // TODO: The verification methods are not copied over from celestia-node because of problematic imports.
 type CommitmentProof struct {
@@ -56,8 +45,8 @@ type CommitmentProof struct {
 	NamespaceID namespace.ID `json:"namespace_id"`
 	// RowProof is the proof of the rows containing the blob's data to the
 	// data root.
-	RowProof         RowProof `json:"row_proof"`
-	NamespaceVersion uint8    `json:"namespace_version"`
+	RowProof         proofs.RowProof `json:"row_proof"`
+	NamespaceVersion uint8           `json:"namespace_version"`
 }
 
 type SubscriptionResponse struct {
@@ -174,4 +163,28 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 
 func (b *Blob) Index() int {
 	return b.index
+}
+
+// Length returns the number of shares in the blob.
+func (b *Blob) Length() (int, error) {
+	s, err := BlobsToShares(b)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(s) == 0 {
+		return 0, errors.New("blob with zero shares received")
+	}
+
+	appShare, err := share.NewShare(s[0])
+	if err != nil {
+		return 0, err
+	}
+
+	seqLength, err := appShare.SequenceLen()
+	if err != nil {
+		return 0, err
+	}
+
+	return share.SparseSharesNeeded(seqLength), nil
 }

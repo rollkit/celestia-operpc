@@ -32,12 +32,12 @@ jobs:
   lint:
     uses: ./.github/workflows/lint.yml
     with:
-      GO_VERSION: "1.20"
+      GO_VERSION: "1.21.5"
 
   test:
     uses: ./.github/workflows/test.yml
     with:
-      GO_VERSION: "1.20"
+      GO_VERSION: "1.21.5"
 
   # Make a release if this is a manually trigger job, i.e. workflow_dispatch
   release:

@@ -13,15 +13,14 @@ const (
 	// DefaultGasPrice specifies the default gas price value to be used when the user
 	// wants to use the global minimal gas price, which is fetched from the celestia-app.
 	DefaultGasPrice float64 = -1.0
-	// gasMultiplier is used to increase gas limit in case if tx has additional cfg.
-	gasMultiplier = 1.1
 )
 
 // NewSubmitOptions constructs a new SubmitOptions with the provided options.
 // It starts with a DefaultGasPrice and then applies any additional
 // options provided through the variadic parameter.
 func NewSubmitOptions(opts ...ConfigOption) *SubmitOptions {
-	options := &SubmitOptions{gasPrice: DefaultGasPrice}
+	options := &SubmitOptions{}
+	WithGasPrice(DefaultGasPrice)(options)
 	for _, opt := range opts {
 		opt(options)
 	}

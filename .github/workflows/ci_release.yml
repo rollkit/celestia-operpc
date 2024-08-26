@@ -30,7 +30,7 @@ jobs:
   lint:
     uses: ./.github/workflows/lint.yml
     with:
-      GO_VERSION: "1.21.5"
+      GO_VERSION: "1.21"
 
   test:
     uses: ./.github/workflows/test.yml

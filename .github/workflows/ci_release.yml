@@ -34,8 +34,6 @@ jobs:
 
   test:
     uses: ./.github/workflows/test.yml
-    with:
-      GO_VERSION: "1.21"
 
   # Make a release if this is a manually trigger job, i.e. workflow_dispatch
   release:

@@ -7,38 +7,38 @@ import (
 	"golang.org/x/exp/slices"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
-	"github.com/celestiaorg/celestia-openrpc/types/namespace"
+	coretypes "github.com/celestiaorg/celestia-openrpc/types/core"
+	appns "github.com/celestiaorg/celestia-openrpc/types/namespace"
 )
 
 // SparseShareSplitter lazily splits blobs into shares that will eventually be
 // included in a data square. It also has methods to help progressively count
 // how many shares the blobs written take up.
 type SparseShareSplitter struct {
-	shares []Share
+	shares []AppShare
 }
 
 func NewSparseShareSplitter() *SparseShareSplitter {
 	return &SparseShareSplitter{}
 }
 
-// Write writes the provided blob to this sparse share splitter. It returns an
-// error or nil if no error is encountered.
-func (sss *SparseShareSplitter) Write(shareVersion uint32, ns, data []byte) error {
-	if !slices.Contains(appconsts.SupportedShareVersions, uint8(shareVersion)) {
-		return fmt.Errorf("unsupported share version: %d", shareVersion)
+func (sss *SparseShareSplitter) Write(blob coretypes.CoreBlob) error {
+	if !slices.Contains(appconsts.SupportedShareVersions, blob.ShareVersion) {
+		return fmt.Errorf("unsupported share version: %d", blob.ShareVersion)
 	}
 
-	rawData := data
-	blobNamespace, err := namespace.From(ns)
+	rawData := blob.Data
+	blobNamespace, err := appns.New(blob.NamespaceVersion, blob.NamespaceID)
 	if err != nil {
 		return err
 	}
 
 	// First share
-	b, err := NewBuilder(blobNamespace, uint8(shareVersion), true).Init()
+	b, err := NewBuilder(blobNamespace, blob.ShareVersion, true).Init()
 	if err != nil {
 		return err
 	}
+	//nolint:gosec
 	if err := b.WriteSequenceLen(uint32(len(rawData))); err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (sss *SparseShareSplitter) Write(shareVersion uint32, ns, data []byte) erro
 		}
 		sss.shares = append(sss.shares, *share)
 
-		b, err = NewBuilder(blobNamespace, uint8(shareVersion), false).Init()
+		b, err = NewBuilder(blobNamespace, blob.ShareVersion, false).Init()
 		if err != nil {
 			return err
 		}
@@ -96,7 +96,7 @@ func (sss *SparseShareSplitter) WriteNamespacePaddingShares(count int) error {
 }
 
 // Export finalizes and returns the underlying shares.
-func (sss *SparseShareSplitter) Export() []Share {
+func (sss *SparseShareSplitter) Export() []AppShare {
 	return sss.shares
 }
 

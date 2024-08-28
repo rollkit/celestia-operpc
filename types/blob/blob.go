@@ -7,8 +7,10 @@ import (
 	"fmt"
 
 	"github.com/celestiaorg/nmt"
+	"github.com/celestiaorg/nmt/namespace"
 
 	"github.com/celestiaorg/celestia-openrpc/types/appconsts"
+	"github.com/celestiaorg/celestia-openrpc/types/proofs"
 	"github.com/celestiaorg/celestia-openrpc/types/share"
 
 	"github.com/celestiaorg/go-square/blob"
@@ -27,6 +29,30 @@ var (
 	ErrBlobNotFound = errors.New("blob: not found")
 	ErrInvalidProof = errors.New("blob: invalid proof")
 )
+
+// CommitmentProof is an inclusion proof of a commitment to the data root.
+// TODO: The verification methods are not copied over from celestia-node because of problematic imports.
+type CommitmentProof struct {
+	// SubtreeRoots are the subtree roots of the blob's data that are
+	// used to create the commitment.
+	SubtreeRoots [][]byte `json:"subtree_roots"`
+	// SubtreeRootProofs are the NMT proofs for the subtree roots
+	// to the row roots.
+	SubtreeRootProofs []*nmt.Proof `json:"subtree_root_proofs"`
+	// NamespaceID is the namespace id of the commitment being proven. This
+	// namespace id is used when verifying the proof. If the namespace id doesn't
+	// match the namespace of the shares, the proof will fail verification.
+	NamespaceID namespace.ID `json:"namespace_id"`
+	// RowProof is the proof of the rows containing the blob's data to the
+	// data root.
+	RowProof         proofs.RowProof `json:"row_proof"`
+	NamespaceVersion uint8           `json:"namespace_version"`
+}
+
+type SubscriptionResponse struct {
+	Blobs  []*Blob
+	Height uint64
+}
 
 // Commitment is a Merkle Root of the subtree built from shares of the Blob.
 // It is computed by splitting the blob into shares and building the Merkle subtree to be included
@@ -95,12 +121,6 @@ func NewBlob(shareVersion uint8, namespace share.Namespace, data []byte) (*Blob,
 	return &Blob{Blob: blob, Commitment: com, namespace: namespace, index: -1}, nil
 }
 
-// DefaultGasPrice returns the default gas price, letting node automatically
-// determine the Fee based on the passed blob sizes.
-func DefaultGasPrice() float64 {
-	return -1.0
-}
-
 type jsonBlob struct {
 	Namespace    share.Namespace `json:"namespace"`
 	Data         []byte          `json:"data"`
@@ -143,4 +163,28 @@ func (b *Blob) UnmarshalJSON(data []byte) error {
 
 func (b *Blob) Index() int {
 	return b.index
+}
+
+// Length returns the number of shares in the blob.
+func (b *Blob) Length() (int, error) {
+	s, err := BlobsToShares(b)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(s) == 0 {
+		return 0, errors.New("blob with zero shares received")
+	}
+
+	appShare, err := share.NewShare(s[0])
+	if err != nil {
+		return 0, err
+	}
+
+	seqLength, err := appShare.SequenceLen()
+	if err != nil {
+		return 0, err
+	}
+
+	return share.SparseSharesNeeded(seqLength), nil
 }

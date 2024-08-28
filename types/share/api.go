@@ -13,7 +13,7 @@ type API struct {
 		ctx context.Context,
 		eh *header.ExtendedHeader,
 		row, col int,
-	) (Share, error) `perm:"read"`
+	) (*Share, error) `perm:"read"`
 	GetEDS func(
 		ctx context.Context,
 		eh *header.ExtendedHeader,
@@ -22,5 +22,10 @@ type API struct {
 		ctx context.Context,
 		eh *header.ExtendedHeader,
 		namespace Namespace,
-	) (NamespacedShares, error) `perm:"read"`
+	) (*NamespacedShares, error) `perm:"read"`
+	GetRange func(
+		ctx context.Context,
+		height uint64,
+		start, end int,
+	) (*GetRangeResult, error) `perm:"read"`
 }

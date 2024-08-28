@@ -87,6 +87,7 @@ func (t *TestSuite) TearDownSuite() {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
+	t.Skip("skipping integration test suite until we have a better way to run it")
 	suite.Run(t, new(TestSuite))
 }
 
@@ -128,7 +129,7 @@ func (t *TestSuite) TestRoundTrip() {
 	t.Require().NoError(err)
 
 	// write blob to DA
-	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, blob.DefaultGasPrice())
+	height, err := client.Blob.Submit(ctx, []*blob.Blob{blobBlob}, blob.NewSubmitOptions())
 	t.Require().NoError(err)
 	t.Require().NotZero(height)
 

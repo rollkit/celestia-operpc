@@ -24,54 +24,43 @@ type API struct {
 	Transfer func(
 		ctx context.Context,
 		to AccAddress,
-		amount,
-		fee Int,
-		gasLimit uint64,
+		amount Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
-	// SubmitTx submits the given transaction/message to the
-	// Celestia network and blocks until the tx is included in
-	// a block.
-	SubmitTx func(ctx context.Context, tx Tx) (*TxResponse, error) `perm:"read"`
 	// SubmitPayForBlob builds, signs and submits a PayForBlob transaction.
 	SubmitPayForBlob func(
 		ctx context.Context,
-		fee Int,
-		gasLim uint64,
 		blobs []*blob.Blob,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 	// CancelUnbondingDelegation cancels a user's pending undelegation from a validator.
 	CancelUnbondingDelegation func(
 		ctx context.Context,
 		valAddr ValAddress,
-		amount,
-		height,
-		fee Int,
-		gasLim uint64,
+		amount, height Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 	// BeginRedelegate sends a user's delegated tokens to a new validator for redelegation.
 	BeginRedelegate func(
 		ctx context.Context,
 		srcValAddr,
 		dstValAddr ValAddress,
-		amount,
-		fee Int,
-		gasLim uint64,
+		amount Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 	// Undelegate undelegates a user's delegated tokens, unbonding them from the current validator.
 	Undelegate func(
 		ctx context.Context,
 		delAddr ValAddress,
-		amount,
-		fee Int,
-		gasLim uint64,
+		amount Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 	// Delegate sends a user's liquid tokens to a validator for delegation.
 	Delegate func(
 		ctx context.Context,
 		delAddr ValAddress,
-		amount,
-		fee Int,
-		gasLim uint64,
+		amount Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 	// QueryDelegation retrieves the delegation information between a delegator and a validator.
 	QueryDelegation func(
@@ -93,15 +82,13 @@ type API struct {
 	GrantFee func(
 		ctx context.Context,
 		grantee AccAddress,
-		amount,
-		fee Int,
-		gasLim uint64,
+		amount Int,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
-	// RevokeGrantFee revokes the given amount of fee from the given grantee.
+	// RevokeGrantFee revokes the granted fee from the given grantee.
 	RevokeGrantFee func(
 		ctx context.Context,
 		grantee AccAddress,
-		fee Int,
-		gasLim uint64,
+		config *TxConfig,
 	) (*TxResponse, error) `perm:"write"`
 }

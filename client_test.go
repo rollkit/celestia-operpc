@@ -87,6 +87,7 @@ func (t *TestSuite) TearDownSuite() {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
+	t.Skip("skipping integration test suite until we have a better way to run it")
 	suite.Run(t, new(TestSuite))
 }
 

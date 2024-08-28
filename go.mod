@@ -8,7 +8,7 @@ require (
 	github.com/celestiaorg/go-header v0.4.1
 	github.com/celestiaorg/go-square v1.0.1
 	github.com/celestiaorg/go-square/merkle v0.0.0-20240429192549-dea967e1533b
-	github.com/celestiaorg/nmt v0.21.0
+	github.com/celestiaorg/nmt v0.22.1
 	github.com/celestiaorg/rsmt2d v0.11.0
 	github.com/cometbft/cometbft v0.37.2
 	github.com/filecoin-project/go-jsonrpc v0.5.0

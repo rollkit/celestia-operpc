@@ -365,6 +365,7 @@ func SparseSharesNeeded(sequenceLen uint32) (sharesNeeded int) {
 
 	bytesAvailable := appconsts.FirstSparseShareContentSize
 	sharesNeeded++
+	//nolint:gosec
 	for uint32(bytesAvailable) < sequenceLen {
 		bytesAvailable += appconsts.ContinuationSparseShareContentSize
 		sharesNeeded++

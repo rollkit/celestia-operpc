@@ -140,6 +140,7 @@ func (b *Builder) MaybeWriteReservedBytes() error {
 	}
 
 	byteIndexOfNextUnit := len(b.rawShareData)
+	//nolint:gosec
 	reservedBytes, err := NewReservedBytes(uint32(byteIndexOfNextUnit))
 	if err != nil {
 		return err

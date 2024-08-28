@@ -38,6 +38,7 @@ func (sss *SparseShareSplitter) Write(blob coretypes.CoreBlob) error {
 	if err != nil {
 		return err
 	}
+	//nolint:gosec
 	if err := b.WriteSequenceLen(uint32(len(rawData))); err != nil {
 		return err
 	}

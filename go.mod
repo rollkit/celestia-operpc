@@ -1,6 +1,6 @@
 module github.com/celestiaorg/celestia-openrpc
 
-go 1.21
+go 1.21.5
 
 require (
 	cosmossdk.io/math v1.3.0

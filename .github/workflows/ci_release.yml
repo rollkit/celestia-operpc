@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Version Release
-        uses: celestiaorg/.github/.github/actions/version-release@v0.4.3
+        uses: celestiaorg/.github/.github/actions/version-release@v0.4.6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version-bump: ${{inputs.version}}

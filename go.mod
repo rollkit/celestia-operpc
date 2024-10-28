@@ -1,6 +1,7 @@
 module github.com/celestiaorg/celestia-openrpc
 
 go 1.21.5
+toolchain go1.22.5
 
 require (
 	cosmossdk.io/math v1.3.0
@@ -11,7 +12,7 @@ require (
 	github.com/celestiaorg/nmt v0.21.0
 	github.com/celestiaorg/rsmt2d v0.11.0
 	github.com/cometbft/cometbft v0.37.2
-	github.com/filecoin-project/go-jsonrpc v0.5.0
+	github.com/filecoin-project/go-jsonrpc v0.7.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/libp2p/go-libp2p v0.30.0
 	github.com/ory/dockertest/v3 v3.10.0
